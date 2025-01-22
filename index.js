@@ -1,35 +1,26 @@
-import http from "http";
-import fs from "node:fs";
+import express from "express";
+const PORT = parseInt(process.env.PORT) || 8080;
+const dirname = import.meta.dirname;
 
-function sendFile(filename, response) {
-  try {
-    fs.createReadStream(filename).pipe(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
+const app = express();
 
-const server = http.createServer((req, res) => {
-  switch (req.url) {
-    case "/":
-      res.writeHead(200, { "Content-Type": "text/html" });
-      sendFile("./index.html", res);
-      break;
-    case "/about":
-      res.writeHead(200, { "Content-Type": "text/html" });
-      sendFile("./about.html", res);
-      break;
-    case "/contact-me":
-      res.writeHead(200, { "Content-Type": "text/html" });
-      sendFile("./contact-me.html", res);
-      break;
-    default:
-      res.writeHead(404, { "Content-Type": "text/html" });
-      sendFile("./404.html", res);
-      break;
-  }
+app.listen(PORT, () => {
+  console.log(`Listening to port: ${PORT}`);
 });
 
-server.listen(8080, "localhost", () => {
-  console.log("listening in port 8080");
+app.get("/", (req, res) => {
+  res.sendFile("./index.html", { root: dirname });
+});
+
+app.get("/about", (req, res) => {
+  res.sendFile("./about.html", { root: dirname });
+});
+
+app.get("/contact-me", (req, res) => {
+  res.sendFile("./contact-me");
+});
+
+app.use((req, res) => {
+  res.statusCode = 404;
+  res.sendFile("./404.html", { root: dirname });
 });
