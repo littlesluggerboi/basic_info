@@ -15,7 +15,14 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, { "Content-Type": "text/html" });
       sendFile("./index.html", res);
       break;
-    
+    case "/about":
+      res.writeHead(200, { "Content-Type": "text/html" });
+      sendFile("./about.html", res);
+      break;
+    case "/contact-me":
+      res.writeHead(200, { "Content-Type": "text/html" });
+      sendFile("./contact-me.html", res);
+      break;
     default:
       res.writeHead(404, { "Content-Type": "text/html" });
       sendFile("./404.html", res);
@@ -23,6 +30,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(3000, "localhost", () => {
-  console.log("listening in port 3000");
+server.listen(8080, "localhost", () => {
+  console.log("listening in port 8080");
 });
